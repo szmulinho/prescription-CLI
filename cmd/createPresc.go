@@ -2,47 +2,42 @@ package cmd
 
 import (
 	"fmt"
-	"time"
+	"github.com/spf13/cobra"
+	"github.com/szmulinho/preAppCli/internal/structs"
 	"github.com/szmulinho/prescription/pkg/api/endpoints"
 	"github.com/szmulinho/prescription/pkg/model"
-	"github.com/spf13/cobra"
+	"time"
 )
 
-func cmd() {
-	var preID, expiration string
-	var drugs []string
+var createPrescCmd = &cobra.Command{
+	Use:   "create",
+	Short: "Create a new prescription",
+	Run: func(cmd *cobra.Command, args []string) {
+		t, err := time.Parse(time.RFC3339, structs.Expiration)
+		if err != nil {
+			fmt.Println("Error parsing expiration time:", err)
+			return
+		}
 
-	var createPrescCmd = &cobra.Command{
-		Use:   "create",
-		Short: "Create a new prescription",
-		Run: func(cmd *cobra.Command, args []string) {
-			t, err := time.Parse(time.RFC3339, expiration)
-			if err != nil {
-				fmt.Println("Error parsing expiration time:", err)
-				return
-			}
+		pre := model.CreatePrescInput{
+			PreId:      structs.PreID,
+			Drugs:      structs.Drugs,
+			Expiration: t,
+		}
 
-			pre := model.CreatePrescInput{
-				PreId:      preID,
-				Drugs:      drugs,
-				Expiration: t,
-			}
+		fmt.Println("Created prescription:", pre)
 
-			fmt.Println("Created prescription:", pre)
+		resp := endpoints.CreatePrescription
+		fmt.Println("Prescription created with ID:", resp)
+	},
+}
 
-			resp := endpoints.CreatePrescription
-			fmt.Println("Prescription created with ID:", resp)
-		},
-	}
+func init() {
 
-	createPrescCmd.Flags().StringVar(&preID, "id", "", "ID of the prescription (required)")
-	createPrescCmd.MarkFlagRequired("id")
-
-	createPrescCmd.Flags().StringSliceVar(&drugs, "drugs", []string{}, "List of drugs (separated by commas)")
-
-	createPrescCmd.Flags().StringVar(&expiration, "expiration", "", "Expiration time (RFC3339 format) (required)")
-	createPrescCmd.MarkFlagRequired("expiration")
-
+	rootCmd.AddCommand(createPrescCmd)
+	createPrescCmd.Flags().StringVar(&structs.PreID, "id", "", "ID of the prescription (required)")
+	createPrescCmd.Flags().StringSliceVar(&structs.Drugs, "drugs", []string{}, "List of drugs (separated by commas)")
+	createPrescCmd.Flags().StringVar(&structs.Expiration, "expiration", "", "Expiration time (RFC3339 format) (required)")
 	var rootCmd = &cobra.Command{Use: "prescription-cli"}
 	rootCmd.AddCommand(createPrescCmd)
 

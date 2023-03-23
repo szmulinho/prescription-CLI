@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/szmulinho/preAppCli/internal/structs"
 	"github.com/szmulinho/prescription/pkg/api/endpoints"
 )
 
@@ -13,10 +12,8 @@ var getAllCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Println(structs.Prescs)
-
 		resp := endpoints.GetAllPrescriptions
-		fmt.Println("There are your prescriptions", resp)
+		fmt.Println(resp)
 	},
 }
 

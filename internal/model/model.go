@@ -1,15 +1,12 @@
-package structs
+package model
 
 import (
-	"github.com/szmulinho/prescription/pkg/model"
 	"time"
 )
 
-var Prescs []model.CreatePrescInput
+var Prescs []CreatePrescInput
 
-var PreID string
-
-var Expiration time.Time
+var Expiration string
 
 var Drugs []string
 
@@ -18,3 +15,7 @@ type CreatePrescInput struct {
 	Drugs      []string  `json:"drugs"`
 	Expiration time.Time `json:"expiration"`
 }
+
+var PrescriptionID string
+
+var P CreatePrescInput

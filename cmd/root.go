@@ -4,9 +4,12 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
+	"github.com/szmulinho/preAppCli/cmd/commands/create"
+	delete2 "github.com/szmulinho/preAppCli/cmd/commands/delete"
+	"github.com/szmulinho/preAppCli/cmd/commands/get"
+	"github.com/szmulinho/preAppCli/cmd/commands/update"
+	"os"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -34,13 +37,11 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.preAppCli.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(create.AddPrescCmd)
+	rootCmd.AddCommand(create.CreateTokenCmd)
+	rootCmd.AddCommand(delete2.DeletePrescCmd)
+	rootCmd.AddCommand(get.GetAllPrescsCmd)
+	rootCmd.AddCommand(get.GetPrescCmd)
+	rootCmd.AddCommand(update.UpdateDrugCmd)
 }
